@@ -14,7 +14,7 @@ use Swoft\Bean\Annotation\Mapping\Bean;
  */
 class ConstantUtil
 {
-	public $audio_format_value = [
+	public static $audio_format_value = [
         'student_duration' => [
             1 => ['start' => 3 * 60, 'end' => 8 * 60],
             2 => ['start' => 3 * 60, 'end' => 9 * 60],

@@ -18,15 +18,10 @@ use Swoft\Bean\BeanFactory; // 需要引入
  */
 class BaseInfoManager
 {
-	/**
-     * @Inject("constantUtil")
-     *
-     * @var ConstantUtil
-     */
-	private $constantUtil;
-
 	public static function getEmotionInfo(int $class_id, int $start){
 		// Log::record('情绪曲线接口请求');
+		$shortUtil = BeanFactory::getBean('shortUtil');
+		$url = $shortUtil::$emotion_curve_info ;
 		$param = [];
 		$param['classId'] = $class_id;
 		$param['time'] = $start;
@@ -48,6 +43,8 @@ class BaseInfoManager
 		// Log::record('语音信息接口请求');
 		$curlUtil = BeanFactory::getBean('curlUtil');
 		$objectUtil = BeanFactory::getBean('objectUtil');
+		$shortUtil = BeanFactory::getBean('shortUtil');
+		$url = $shortUtil::$audio_text_info_api ;
 		$ret = $curlUtil::get($url, $param);
 			
 		// echo $ret;die();
@@ -90,7 +87,10 @@ class BaseInfoManager
 		$objectUtil = BeanFactory::getBean('objectUtil');
 		$curlUtil = BeanFactory::getBean('curlUtil');
 		$timeUtil = BeanFactory::getBean('timeUtil');
+		$shortUtil = BeanFactory::getBean('shortUtil');
+		$constantUtil = BeanFactory::getBean('constantUtil');
 
+		$url = $shortUtil::$audio_calc_info_api ;
 		$ret = $curlUtil::get($url, $param);
 			
 		$ret = json_encode($ret);
@@ -109,6 +109,8 @@ class BaseInfoManager
 		$student_duration = round( $objectUtil::maybeGetInt($res['data'], 'voiceDurationStu') / 1000);
 		$tea_audio_speed = $objectUtil::maybeGetInt($res['data'], 'avgWordSpeedTea');
 		$source = $objectUtil::maybeGetInt($res['data'], 'source', 1); //数据来源 1:自研, 2:阿里
+
+		$audio_format_value = $constantUtil::$audio_format_value;
 		// 获取 level 
 		$level = $param['level'];
 		if(!$level || 1 === $source){
@@ -117,21 +119,21 @@ class BaseInfoManager
 			$health['tea_audio_speed_desc'] = '正常';
 		}else{
 			$health['teacher_duration_desc'] = '正常';
-			if($teacher_duration > self::$constantUtil->$audio_format_value['teacher_duration'][$level]['end']){
+			if($teacher_duration > $audio_format_value['teacher_duration'][$level]['end']){
 				$health['teacher_duration_desc'] = '过长';
-			}else if($teacher_duration < self::$constantUtil->$audio_format_value['teacher_duration'][$level]['start']){
+			}else if($teacher_duration < $audio_format_value['teacher_duration'][$level]['start']){
 				$health['teacher_duration_desc'] = '过短';
 			}
 			$health['student_duration_desc'] = '正常';
-			if($student_duration > self::$constantUtil->$audio_format_value['student_duration'][$level]['end']){
+			if($student_duration > $audio_format_value['student_duration'][$level]['end']){
 				$health['student_duration_desc'] = '过长';
-			}else if($student_duration < self::$constantUtil->$audio_format_value['student_duration'][$level]['start']){
+			}else if($student_duration < $audio_format_value['student_duration'][$level]['start']){
 				$health['student_duration_desc'] = '过短';
 			}
 			$health['tea_audio_speed_desc'] = '正常';
-			if($tea_audio_speed > self::$constantUtil->$audio_format_value['tea_audio_speed'][$level]['end']){
+			if($tea_audio_speed > $audio_format_value['tea_audio_speed'][$level]['end']){
 				$health['tea_audio_speed_desc'] = '过快';
-			}else if($tea_audio_speed < self::$constantUtil->$audio_format_value['tea_audio_speed'][$level]['start']){
+			}else if($tea_audio_speed < $audio_format_value['tea_audio_speed'][$level]['start']){
 				$health['tea_audio_speed_desc'] = '过慢';
 			}
 		}
