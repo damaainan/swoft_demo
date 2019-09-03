@@ -13,3 +13,4 @@ temp/
 .DS_Store
 public/devtool/
 *ShortUtil.php
+sync
