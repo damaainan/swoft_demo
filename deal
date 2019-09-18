@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+$data = file_get_contents("./public/swagger/swagger.json");
+$data = json_decode($data, true);
+
+// 将 swagger 生成的标准文档处理成 swagger-bootstrap-ui 使用的文档
+
+// 提取 tags
+$tags = [];
+foreach ($data['paths'] as $url) {
+	foreach ($url as $method) {
+		$tags[] = $method['tags'][0];
+	}
+}
+$tags = array_unique($tags);
+$ntags = [];
+foreach ($tags as $tag) {
+	$ntags[] = ['name' => $tag, 'description' => ''];
+}
+$data['tags'] = $ntags;
+$json = json_encode($data);
+file_put_contents("./public/swagger/swagger/swagger1.json", $json);
