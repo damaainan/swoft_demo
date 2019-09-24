@@ -1,0 +1,161 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api server",
+        "license": {
+            "name": "MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost2/swoftd/public/index.php/",
+            "description": "local Api server"
+        }
+    ],
+    "paths": {
+        "/api/getVideos": {
+            "get": {
+                "tags": [
+                    "api"
+                ],
+                "summary": "获取视频",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 123
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/HighVideoResponse"
+                        }
+                    }
+                },
+                "operationId": "getVideosUsingGET"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "api",
+            "description": ""
+        }
+    ],
+    "definitions": {
+        "HighVideoResponse": {
+            "title": "ApiCode model",
+            "description": "ApiCode model",
+            "properties": {
+                "code": {
+                    "title": "自定义响应码",
+                    "description": "自定义响应码",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 200
+                },
+                "msg": {
+                    "title": "响应信息",
+                    "description": "响应信息",
+                    "type": "string",
+                    "format": "string",
+                    "default": "成功"
+                },
+                "m_timestamp": {
+                    "title": "绝对时间戳",
+                    "description": "绝对时间戳",
+                    "type": "number",
+                    "format": "float",
+                    "default": 1568279892.9313951
+                },
+                "data": {
+                    "title": "返回数据",
+                    "description": "返回数据",
+                    "$ref": "#/definitions/HighVideos"
+                }
+            },
+            "type": "object"
+        },
+        "HighVideos": {
+            "title": "HighVideos model",
+            "description": "HighVideos model",
+            "properties": {
+                "url": {
+                    "title": "视频播放地址",
+                    "description": "视频播放地址",
+                    "type": "string",
+                    "format": "string",
+                    "default": "http://......./video.mp4"
+                },
+                "share_link": {
+                    "title": "分享视频链接",
+                    "description": "share_link",
+                    "type": "string",
+                    "format": "string",
+                    "default": "http://activity........"
+                },
+                "title": {
+                    "title": "分享链接标题",
+                    "description": "title",
+                    "type": "string",
+                    "format": "string",
+                    "default": "我的Cindy宝贝已经在VIPKID坚持学英语71天，快来围观吧~ "
+                },
+                "type": {
+                    "title": "视频样式",
+                    "description": "type 0.旧版横屏视频 1.新版竖屏视频",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": "0"
+                },
+                "pieces_count": {
+                    "title": "精彩片段数量",
+                    "description": "精彩片段数量",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
+                },
+                "pieces": {
+                    "title": "精彩视频片段",
+                    "description": "精彩视频片段",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/HighVideoPieces"
+                    },
+                    "default": "[{'start':25,'end':30},{'start':45,'end':50}]"
+                }
+            },
+            "type": "object"
+        },
+        "HighVideoPieces": {
+            "title": "HighVideoPieces model",
+            "description": "HighVideoPieces model",
+            "properties": {
+                "start": {
+                    "title": "视频开始时间",
+                    "description": "视频开始时间",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
+                },
+                "end": {
+                    "title": "视频结束时间",
+                    "description": "视频结束时间",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
+                }
+            },
+            "type": "object"
+        }
+    },
+    "consumes": "application/json",
+    "produces": "application/json"
+}

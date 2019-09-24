@@ -38,8 +38,8 @@
  *   @OA\Response(
  *     response=200,
  *     description="successful operation",
- *     @OA\JsonContent(ref="#/components/schemas/HighVideos"),
- *     @OA\XmlContent(ref="#/components/schemas/HighVideos")
+ *     @OA\JsonContent(ref="#/components/schemas/HighVideoResponse"),
+ *     @OA\XmlContent(ref="#/components/schemas/HighVideoResponse")
  *   )
  * )
  */

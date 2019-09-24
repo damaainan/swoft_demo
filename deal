@@ -8,16 +8,37 @@ $data = json_decode($data, true);
 
 // 提取 tags
 $tags = [];
-foreach ($data['paths'] as $url) {
-	foreach ($url as $method) {
-		$tags[] = $method['tags'][0];
-	}
+foreach ($data['paths'] as $pkey => &$url) {
+    $subs = explode("/", $pkey);
+    $sub  = array_pop($subs);
+    foreach ($url as $mkey => &$method) {
+        $tags[] = $method['tags'][0];
+
+        // 添加、去掉一些必要的属性
+        $method['operationId'] = $sub . "Using" . strtoupper($mkey);
+        foreach ($method['responses'] as $rkey => &$resp) {
+            if (isset($resp['content']) && isset($resp['content']['application/json'])) {
+                $resp = $resp['content']['application/json'];
+                unset($resp['content']);
+            }
+        }
+    }
 }
-$tags = array_unique($tags);
+$tags  = array_unique($tags);
 $ntags = [];
 foreach ($tags as $tag) {
-	$ntags[] = ['name' => $tag, 'description' => ''];
+    $ntags[] = ['name' => $tag, 'description' => ''];
 }
 $data['tags'] = $ntags;
-$json = json_encode($data);
-file_put_contents("./public/swagger/swagger/swagger1.json", $json);
+
+$data['definitions'] = $data['components']['schemas'];
+unset($data['components']);
+
+$data['consumes'] = "application/json";
+$data['produces'] = "application/json";
+
+$json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+$json = str_replace("components/schemas", "definitions", $json);
+
+file_put_contents("./public/swagger/json/swagger1.json", $json);
