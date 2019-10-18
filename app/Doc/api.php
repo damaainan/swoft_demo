@@ -15,7 +15,7 @@
  *     ),
  *     @OA\Server(
  *         description="local Api server",
- *         url="http://localhost2/swoftd/public/index.php/",
+ *         url="localhost2/swoftd/public/index.php/",
  *     )
  * )
  */

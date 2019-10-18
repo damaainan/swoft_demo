@@ -9,7 +9,7 @@
       "name": "group@qq.com"
     }
   },
-  "host": "http://localhost2",
+  "host": "localhost2",
   "basePath": "/",
   "tags": [
     {

@@ -34,6 +34,11 @@ $data['tags'] = $ntags;
 $data['definitions'] = $data['components']['schemas'];
 unset($data['components']);
 
+// 可以根据其他属性取不同的host，做到不同环境皆可用
+
+$data['host'] = $data['servers'][0]['url'];
+$data['basePath'] = "/";
+
 $data['consumes'] = "application/json";
 $data['produces'] = "application/json";
 

@@ -9,12 +9,12 @@
     },
     "servers": [
         {
-            "url": "http://localhost2/swoftd/public/index.php/",
+            "url": "localhost2/ailabv1/public/index.php",
             "description": "local Api server"
         }
     ],
     "paths": {
-        "/api/getVideos": {
+        "/cp_api/getHighVideos": {
             "get": {
                 "tags": [
                     "api"
@@ -22,7 +22,7 @@
                 "summary": "获取视频",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "class_id",
                         "in": "query",
                         "description": "",
                         "required": true,
