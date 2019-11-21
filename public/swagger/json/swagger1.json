@@ -11,6 +11,14 @@
         {
             "url": "localhost2/swoftd/public/index.php",
             "description": "local Api server"
+        },
+        {
+            "url": "10.22.60.240/",
+            "description": "dev Api server"
+        },
+        {
+            "url": "localhost2/ailabv1/public/index.php",
+            "description": "test Api server"
         }
     ],
     "paths": {
@@ -35,11 +43,39 @@
                 "responses": {
                     "200": {
                         "schema": {
-                            "$ref": "#/definitions/HighVideos"
+                            "$ref": "#/definitions/HighVideoResponse"
                         }
                     }
                 },
-                "operationId": "getHighVideosUsingGET"
+                "operationId": "getVideosUsingGET"
+            }
+        },
+        "/queryApi/getRankAndPreDict": {
+            "get": {
+                "tags": [
+                    "api"
+                ],
+                "summary": "关单神器大数据接口",
+                "parameters": [
+                    {
+                        "name": "classId",
+                        "in": "query",
+                        "description": "课程ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 123
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "schema": {
+                            "$ref": "#/definitions/RankPredictResponse"
+                        }
+                    }
+                },
+                "operationId": "getRankAndPreDictUsingGET"
             }
         }
     },
@@ -50,7 +86,7 @@
         }
     ],
     "definitions": {
-        "ApiCode": {
+        "HighVideoResponse": {
             "title": "ApiCode model",
             "description": "ApiCode model",
             "properties": {
@@ -74,6 +110,62 @@
                     "type": "number",
                     "format": "float",
                     "default": 1568279892.931395
+                },
+                "data": {
+                    "title": "返回数据",
+                    "description": "返回数据",
+                    "$ref": "#/definitions/HighVideos"
+                }
+            },
+            "type": "object"
+        },
+        "HighVideos": {
+            "title": "HighVideos model",
+            "description": "HighVideos model",
+            "properties": {
+                "url": {
+                    "title": "视频播放地址",
+                    "description": "视频播放地址",
+                    "type": "string",
+                    "format": "string",
+                    "default": "http://......./video.mp4"
+                },
+                "share_link": {
+                    "title": "分享视频链接",
+                    "description": "share_link",
+                    "type": "string",
+                    "format": "string",
+                    "default": "http://activity........"
+                },
+                "title": {
+                    "title": "分享链接标题",
+                    "description": "title",
+                    "type": "string",
+                    "format": "string",
+                    "default": "我的Cindy宝贝已经在VIPKID坚持学英语71天，快来围观吧~ "
+                },
+                "type": {
+                    "title": "视频样式",
+                    "description": "type 0.旧版横屏视频 1.新版竖屏视频",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": "0"
+                },
+                "pieces_count": {
+                    "title": "精彩片段数量",
+                    "description": "精彩片段数量",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
+                },
+                "pieces": {
+                    "title": "精彩视频片段",
+                    "description": "精彩视频片段",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/HighVideoPieces"
+                    },
+                    "default": "[{'start':25,'end':30},{'start':45,'end':50}]"
                 }
             },
             "type": "object"
@@ -99,47 +191,326 @@
             },
             "type": "object"
         },
-        "HighVideos": {
-            "title": "HighVideos model",
-            "description": "HighVideos model",
+        "RankPredictResponse": {
+            "title": "RankPredictResponse model",
+            "description": "RankPredictResponse model",
             "properties": {
-                "url": {
-                    "title": "视频播放地址",
-                    "description": "视频播放地址",
+                "code": {
+                    "title": "自定义响应码",
+                    "description": "自定义响应码",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 200
+                },
+                "msg": {
+                    "title": "响应信息",
+                    "description": "响应信息",
                     "type": "string",
                     "format": "string",
-                    "default": "http://......./video.mp4"
+                    "default": "成功"
                 },
-                "share_link": {
-                    "title": "分享视频链接",
-                    "description": "share_link",
+                "m_timestamp": {
+                    "title": "绝对时间戳",
+                    "description": "绝对时间戳",
+                    "type": "number",
+                    "format": "float",
+                    "default": 1568279892.931395
+                },
+                "data": {
+                    "title": "返回数据",
+                    "description": "返回数据",
+                    "$ref": "#/definitions/RankPredict"
+                }
+            },
+            "type": "object"
+        },
+        "RankPredict": {
+            "title": "RankPredict model",
+            "description": "RankPredict model",
+            "properties": {
+                "studentId": {
+                    "title": "学生ID",
+                    "description": "学生ID",
+                    "type": "integer",
+                    "format": "string",
+                    "default": 123456
+                },
+                "studentName": {
+                    "title": "学生姓名",
+                    "description": "学生姓名",
                     "type": "string",
                     "format": "string",
-                    "default": "http://activity........"
+                    "default": "宝宝"
                 },
-                "pieces_count": {
-                    "title": "精彩片段数量",
-                    "description": "精彩片段数量",
+                "studentNameEN": {
+                    "title": "学生英文姓名",
+                    "description": "学生英文姓名",
+                    "type": "string",
+                    "format": "string",
+                    "default": "baobao"
+                },
+                "age": {
+                    "title": "学生年龄",
+                    "description": "学生年龄",
+                    "type": "integer",
+                    "format": "string",
+                    "default": 5
+                },
+                "level": {
+                    "title": "本节课标",
+                    "description": "本节课标",
+                    "type": "string",
+                    "format": "string",
+                    "default": "level1 unit 1"
+                },
+                "bigDataLevel": {
+                    "title": "大数据同龄水平",
+                    "description": "大数据同龄水平",
+                    "type": "string",
+                    "format": "string",
+                    "default": "level1 unit 1"
+                },
+                "classPerformance": {
+                    "title": "学生课中表现",
+                    "description": "学生课中表现",
+                    "default": "",
+                    "$ref": "#/definitions/ClassPerformance"
+                },
+                "classPredict": {
+                    "title": "学习效果预估",
+                    "description": "学习效果预估",
+                    "default": "",
+                    "$ref": "#/definitions/ClassPredict"
+                },
+                "recommendEffect": {
+                    "title": "推荐人学生学习进步情况",
+                    "description": "推荐人学生学习进步情况",
+                    "default": "",
+                    "$ref": "#/definitions/RecommendEffect"
+                }
+            },
+            "type": "object"
+        },
+        "ClassPerformance": {
+            "title": "ClassPerformance model",
+            "description": "ClassPerformance model",
+            "properties": {
+                "talk": {
+                    "title": "开口时长数据",
+                    "description": "开口时长数据",
+                    "default": {
+                        "current": 2,
+                        "rank": 0.2658,
+                        "average": 5
+                    },
+                    "$ref": "#/definitions/RankPieces"
+                },
+                "focus": {
+                    "title": "专注时长数据",
+                    "description": "专注时长数据",
+                    "default": {
+                        "current": 2,
+                        "rank": 0.2658,
+                        "average": 5
+                    },
+                    "$ref": "#/definitions/RankPieces"
+                },
+                "interact": {
+                    "title": "互动次数数据",
+                    "description": "互动次数数据",
+                    "default": {
+                        "current": 2,
+                        "rank": 0.2658,
+                        "average": 5
+                    },
+                    "$ref": "#/definitions/RankPieces"
+                },
+                "words": {
+                    "title": "词汇量数据",
+                    "description": "词汇量数据",
+                    "default": {
+                        "current": 2,
+                        "rank": 0.2658,
+                        "average": 5
+                    },
+                    "$ref": "#/definitions/RankPieces"
+                },
+                "sentence": {
+                    "title": "整句输出数据",
+                    "description": "整句输出数据",
+                    "default": {
+                        "current": 2,
+                        "rank": 0.2658,
+                        "average": 5
+                    },
+                    "$ref": "#/definitions/RankPieces"
+                }
+            },
+            "type": "object"
+        },
+        "ClassPredict": {
+            "title": "ClassPredict model",
+            "description": "ClassPredict model",
+            "properties": {
+                "talk": {
+                    "title": "开口时长数据",
+                    "description": "开口时长数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                },
+                "focus": {
+                    "title": "专注时长数据",
+                    "description": "专注时长数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                },
+                "interact": {
+                    "title": "互动次数数据",
+                    "description": "互动次数数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                },
+                "words": {
+                    "title": "词汇量数据",
+                    "description": "词汇量数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                },
+                "sentence": {
+                    "title": "整句输出数据",
+                    "description": "整句输出数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                }
+            },
+            "type": "object"
+        },
+        "RecommendEffect": {
+            "title": "RecommendEffect model",
+            "description": "RecommendEffect model",
+            "properties": {
+                "recommendId": {
+                    "title": "推荐人ID",
+                    "description": "推荐人ID",
+                    "type": "integer",
+                    "format": "string",
+                    "default": 123456
+                },
+                "talk": {
+                    "title": "开口时长数据",
+                    "description": "开口时长数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                },
+                "focus": {
+                    "title": "专注时长数据",
+                    "description": "专注时长数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                },
+                "interact": {
+                    "title": "互动次数数据",
+                    "description": "互动次数数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                },
+                "words": {
+                    "title": "词汇量数据",
+                    "description": "词汇量数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                },
+                "sentence": {
+                    "title": "整句输出数据",
+                    "description": "整句输出数据",
+                    "default": {
+                        "value": 2,
+                        "upgrade": 5
+                    },
+                    "$ref": "#/definitions/PredictPieces"
+                }
+            },
+            "type": "object"
+        },
+        "RankPieces": {
+            "title": "RankPieces model",
+            "description": "RankPieces model",
+            "properties": {
+                "current": {
+                    "title": "当前学生的值",
+                    "description": "当前学生的值",
                     "type": "integer",
                     "format": "int32",
                     "default": 3
                 },
-                "pieces": {
-                    "title": "精彩视频片段",
-                    "description": "精彩视频片段",
-                    "type": "array",
-                    "format": "array",
-                    "items": {
-                        "$ref": "#/definitions/HighVideoPieces"
-                    },
-                    "default": "[{'start':25,'end':30},{'start':45,'end':50}]"
+                "rank": {
+                    "title": "排名",
+                    "description": "排名",
+                    "type": "number",
+                    "format": "float",
+                    "default": 0.25698
+                },
+                "average": {
+                    "title": "平均值",
+                    "description": "平均值",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
+                }
+            },
+            "type": "object"
+        },
+        "PredictPieces": {
+            "title": "PredictPieces model",
+            "description": "PredictPieces model",
+            "properties": {
+                "value": {
+                    "title": "属性的值",
+                    "description": "属性的值",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
+                },
+                "upgrade": {
+                    "title": "可提升数值",
+                    "description": "可提升数值",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
                 }
             },
             "type": "object"
         }
     },
-    "host": "localhost2/ailabv1/public/index.php",
-    "basePath": "/",
+    "host": "localhost2",
+    "basePath": "/swoftd/public/index.php",
     "consumes": "application/json",
     "produces": "application/json"
 }

@@ -1,10 +1,14 @@
 #!/usr/bin/env php
 <?php
-
-$data = file_get_contents("./public/swagger/swagger.json");
-$data = json_decode($data, true);
-
 // 将 swagger 生成的标准文档处理成 swagger-bootstrap-ui 使用的文档
+
+$frompath = $argv[1];
+$topath = $argv[2];
+
+// 输入的标准格式 swagger json 文件
+// $data = file_get_contents("./public/swagger/swagger.json"); 
+$data = file_get_contents($frompath); 
+$data = json_decode($data, true);
 
 // 提取 tags
 $tags = [];
@@ -36,8 +40,23 @@ unset($data['components']);
 
 // 可以根据其他属性取不同的host，做到不同环境皆可用
 
+// 提前设置默认值
 $data['host'] = $data['servers'][0]['url'];
 $data['basePath'] = "/";
+// 接收参数 决定选用哪个 server 
+if($argc >= 4){
+    $env = $argv[3];
+    foreach ($data['servers'] as $server) {
+        if(strpos($server['description'], $env) !== false){
+            $server['url'] = str_replace("http://", '', $server['url']);
+            $server['url'] = str_replace("https://", '', $server['url']);
+            $server_arr = explode('/', $server['url']);
+            $data['host'] = $server_arr[0];
+            array_shift($server_arr);
+            $data['basePath'] = '/' . implode('/', $server_arr);
+        }
+    }
+}
 
 $data['consumes'] = "application/json";
 $data['produces'] = "application/json";
@@ -46,4 +65,6 @@ $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNE
 
 $json = str_replace("components/schemas", "definitions", $json);
 
-file_put_contents("./public/swagger/json/swagger1.json", $json);
+// 输出的格式化的 swagge json 文件
+// file_put_contents("./public/swagger/json/swagger1.json", $json); 
+file_put_contents($topath, $json); 
