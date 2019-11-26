@@ -9,15 +9,15 @@
     },
     "servers": [
         {
-            "url": "localhost2/swoftd/public/index.php",
+            "url": "localhost2/swoftd/public/index.php/",
             "description": "local Api server"
         },
         {
-            "url": "10.22.60.240/",
+            "url": "http://10.22.60.240/",
             "description": "dev Api server"
         },
         {
-            "url": "localhost2/ailabv1/public/index.php",
+            "url": "http://localhost2/ailabv1/public/index.php/",
             "description": "test Api server"
         }
     ],
@@ -253,7 +253,7 @@
                     "title": "学生年龄",
                     "description": "学生年龄",
                     "type": "integer",
-                    "format": "string",
+                    "format": "int32",
                     "default": 5
                 },
                 "level": {
@@ -269,6 +269,13 @@
                     "type": "string",
                     "format": "string",
                     "default": "level1 unit 1"
+                },
+                "isCreate": {
+                    "title": "是否已生成课中表现数据0否1是",
+                    "description": "是否已生成课中表现数据0否1是",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 0
                 },
                 "classPerformance": {
                     "title": "学生课中表现",
@@ -357,45 +364,50 @@
                     "description": "开口时长数据",
                     "default": {
                         "value": 2,
+                        "averageUpgrade": 3,
                         "upgrade": 5
                     },
-                    "$ref": "#/definitions/PredictPieces"
+                    "$ref": "#/definitions/AveragePredictPieces"
                 },
                 "focus": {
                     "title": "专注时长数据",
                     "description": "专注时长数据",
                     "default": {
                         "value": 2,
+                        "averageUpgrade": 3,
                         "upgrade": 5
                     },
-                    "$ref": "#/definitions/PredictPieces"
+                    "$ref": "#/definitions/AveragePredictPieces"
                 },
                 "interact": {
                     "title": "互动次数数据",
                     "description": "互动次数数据",
                     "default": {
                         "value": 2,
+                        "averageUpgrade": 3,
                         "upgrade": 5
                     },
-                    "$ref": "#/definitions/PredictPieces"
+                    "$ref": "#/definitions/AveragePredictPieces"
                 },
                 "words": {
                     "title": "词汇量数据",
                     "description": "词汇量数据",
                     "default": {
                         "value": 2,
+                        "averageUpgrade": 3,
                         "upgrade": 5
                     },
-                    "$ref": "#/definitions/PredictPieces"
+                    "$ref": "#/definitions/AveragePredictPieces"
                 },
                 "sentence": {
                     "title": "整句输出数据",
                     "description": "整句输出数据",
                     "default": {
                         "value": 2,
+                        "averageUpgrade": 3,
                         "upgrade": 5
                     },
-                    "$ref": "#/definitions/PredictPieces"
+                    "$ref": "#/definitions/AveragePredictPieces"
                 }
             },
             "type": "object"
@@ -487,6 +499,34 @@
             },
             "type": "object"
         },
+        "AveragePredictPieces": {
+            "title": "AveragePredictPieces model",
+            "description": "AveragePredictPieces model",
+            "properties": {
+                "value": {
+                    "title": "属性的值",
+                    "description": "属性的值",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
+                },
+                "averageUpgrade": {
+                    "title": "平均可提升数值（无课中表现数据时采用）",
+                    "description": "平均可提升数值（无课中表现数据时采用）",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
+                },
+                "upgrade": {
+                    "title": "预估可提升数值",
+                    "description": "预估可提升数值",
+                    "type": "integer",
+                    "format": "int32",
+                    "default": 3
+                }
+            },
+            "type": "object"
+        },
         "PredictPieces": {
             "title": "PredictPieces model",
             "description": "PredictPieces model",
@@ -510,7 +550,7 @@
         }
     },
     "host": "localhost2",
-    "basePath": "/swoftd/public/index.php",
+    "basePath": "/swoftd/public/index.php/",
     "consumes": "application/json",
     "produces": "application/json"
 }

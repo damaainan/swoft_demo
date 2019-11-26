@@ -107,7 +107,7 @@ class RankPredict
     /**
      * @OA\Property(
      *     default=5,
-     *     format="string",
+     *     format="int32",
      *     description="学生年龄",
      *     title="学生年龄",
      * )
@@ -139,6 +139,17 @@ class RankPredict
      * @var string
      */
     private $bigDataLevel;
+    /**
+     * @OA\Property(
+     *     default=0,
+     *     format="int32",
+     *     description="是否已生成课中表现数据0否1是",
+     *     title="是否已生成课中表现数据0否1是",
+     * )
+     *
+     * @var integer
+     */
+    private $isCreate;
 
 
     /**
@@ -262,56 +273,56 @@ class ClassPredict
 
 	/**
      * @OA\Property(
-     *     default={"value":2,"upgrade":5},
+     *     default={"value":2,"averageUpgrade":3,"upgrade":5},
      *     description="开口时长数据",
      *     title="开口时长数据",
      * )
      *
-     * @var PredictPieces
+     * @var AveragePredictPieces
      */
     private $talk;
 
     /**
      * @OA\Property(
-     *     default={"value":2,"upgrade":5},
+     *     default={"value":2,"averageUpgrade":3,"upgrade":5},
      *     description="专注时长数据",
      *     title="专注时长数据",
      * )
      *
-     * @var PredictPieces
+     * @var AveragePredictPieces
      */
     private $focus;
 
     /**
      * @OA\Property(
-     *     default={"value":2,"upgrade":5},
+     *     default={"value":2,"averageUpgrade":3,"upgrade":5},
      *     description="互动次数数据",
      *     title="互动次数数据",
      * )
      *
-     * @var PredictPieces
+     * @var AveragePredictPieces
      */
     private $interact;
 
     /**
      * @OA\Property(
-     *     default={"value":2,"upgrade":5},
+     *     default={"value":2,"averageUpgrade":3,"upgrade":5},
      *     description="词汇量数据",
      *     title="词汇量数据",
      * )
      *
-     * @var PredictPieces
+     * @var AveragePredictPieces
      */
     private $words;
 
     /**
      * @OA\Property(
-     *     default={"value":2,"upgrade":5},
+     *     default={"value":2,"averageUpgrade":3,"upgrade":5},
      *     description="整句输出数据",
      *     title="整句输出数据",
      * )
      *
-     * @var PredictPieces
+     * @var AveragePredictPieces
      */
     private $sentence;
 }
@@ -449,6 +460,56 @@ class RankPieces
 
 
 /**
+ * Class AveragePredictPieces
+ *
+ * @author  jiachunhui
+ * @OA\Schema(
+ *     title="AveragePredictPieces model",
+ *     description="AveragePredictPieces model",
+ * )
+ */
+class AveragePredictPieces
+{
+
+    /**
+     * @OA\Property(
+     *     default=3,
+     *     format="int32",
+     *     description="属性的值",
+     *     title="属性的值",
+     * )
+     *
+     * @var integer
+     */
+    private $value;
+
+
+    /**
+     * @OA\Property(
+     *     default=3,
+     *     format="int32",
+     *     description="平均可提升数值（无课中表现数据时采用）",
+     *     title="平均可提升数值（无课中表现数据时采用）",
+     * )
+     *
+     * @var integer
+     */
+    private $averageUpgrade;
+
+    /**
+     * @OA\Property(
+     *     default=3,
+     *     format="int32",
+     *     description="预估可提升数值",
+     *     title="预估可提升数值",
+     * )
+     *
+     * @var integer
+     */
+    private $upgrade;
+}
+
+/**
  * Class PredictPieces
  *
  * @author  jiachunhui
@@ -485,3 +546,4 @@ class PredictPieces
      */
     private $upgrade;
 }
+

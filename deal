@@ -6,8 +6,8 @@ $frompath = $argv[1];
 $topath = $argv[2];
 
 // 输入的标准格式 swagger json 文件
-// $data = file_get_contents("./public/swagger/swagger.json"); 
-$data = file_get_contents($frompath); 
+$data = file_get_contents("./public/swagger/swagger.json"); 
+// $data = file_get_contents($frompath); 
 $data = json_decode($data, true);
 
 // 提取 tags
@@ -66,5 +66,5 @@ $json = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNE
 $json = str_replace("components/schemas", "definitions", $json);
 
 // 输出的格式化的 swagge json 文件
-// file_put_contents("./public/swagger/json/swagger1.json", $json); 
-file_put_contents($topath, $json); 
+file_put_contents("./public/swagger/json/swagger1.json", $json); 
+// file_put_contents($topath, $json); 
